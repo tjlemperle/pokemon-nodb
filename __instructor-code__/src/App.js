@@ -1,27 +1,23 @@
 import React, {Component} from 'react'
 import Header from './Components/Header'
 import Finder from './Components/Finder'
-import './App.css'
 import Pokedex from './Components/Pokedex'
 import axios from 'axios'
+import './App.css'
 
-class App extends Component{
+class App extends Component {
   constructor(){
     super()
-
     this.state = {
-      caughtPokemon : [{id: 1, name: 'bulbasaur', image: 'test'}],
-
+      caughtPokemon: []
     }
-
     this.catchPokemon = this.catchPokemon.bind(this)
     this.saveName = this.saveName.bind(this)
     this.releasePokemon = this.releasePokemon.bind(this)
   }
 
-
   componentDidMount(){
-    axios.get('http://localhost:3333/api/pokemon')
+    axios.get('/api/pokemon')
       .then(res => {
         this.setState({
           caughtPokemon: res.data
@@ -30,7 +26,7 @@ class App extends Component{
   }
 
   catchPokemon(pokemon){
-    axios.post('http://localhost:3333/api/pokemon', {pokemon})
+    axios.post('/api/pokemon', {pokemon})
       .then(res => {
         this.setState({
           caughtPokemon: res.data
@@ -39,7 +35,7 @@ class App extends Component{
   }
 
   saveName(id, newName){
-    axios.put(`http://localhost:3333/api/pokemon/${id}`, {name: newName})
+    axios.put(`/api/pokemon/${id}`, {name: newName})
       .then(res => {
         this.setState({
           caughtPokemon: res.data
@@ -48,7 +44,7 @@ class App extends Component{
   }
 
   releasePokemon(id){
-    axios.delete(`http://localhost:3333/api/pokemon/${id}`)
+    axios.delete(`/api/pokemon/${id}`)
       .then(res => {
         this.setState({
           caughtPokemon: res.data
@@ -60,11 +56,11 @@ class App extends Component{
     return(
       <div className='App'>
         <Header />
-        <Finder catchPokemon= {this.catchPokemon}/>
-        <Pokedex 
-        saveName = {this.saveName}
-        releasePokemon = {this.releasePokemon}
-        caughtPokemon = {this.state.caughtPokemon} 
+        <Finder catchPokemon={this.catchPokemon} />
+        <Pokedex
+          saveName={this.saveName}
+          releasePokemon={this.releasePokemon}
+          caughtPokemon={this.state.caughtPokemon}
         />
       </div>
     )
